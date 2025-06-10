@@ -1,0 +1,20 @@
+services:
+  business_service:
+    build:
+      context: ../homework3-app1
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    environment:
+      - SERVICE_INFO=Text processing unit for analytical tasks.
+
+  scheduler_service:
+    build:
+      context: ../homework3-scheduler-app
+      dockerfile: Dockerfile
+    depends_on:
+      - business_service
+    environment:
+      - BUSINESS_SERVICE_URL=http://business_service:8000
+    restart: unless-stopped
